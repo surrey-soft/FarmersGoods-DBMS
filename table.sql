@@ -40,8 +40,7 @@ CREATE TABLE Warehouse (
 
 -- FARMER CONTACT TABLE
 CREATE TABLE FarmerContact (
-    Contact_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Farmer_ID INT,
+    Farmer_ID INT PRIMARY KEY,
     ContactNo VARCHAR(15),
     FOREIGN KEY (Farmer_ID) REFERENCES Farmer(Farmer_ID)
 );
