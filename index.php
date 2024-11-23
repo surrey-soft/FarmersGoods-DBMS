@@ -80,7 +80,7 @@
                                  <a  href="#">Sign In</a>
                               </li>
                               <li class=" d_none get_btn">
-                                 <a  href="signUp.html">New Here?<br>Sign Up</a>
+                                 <a  href="signUp.php">New Here?<br>Sign Up</a>
                               </li>
                            </ul>
                         </div>
