@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 mysqli_query($con,$query);
 
             }
-            header("Location: signIn.php");
+            header("Location:../signIn.php");
         }
         else{
             echo "error";

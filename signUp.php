@@ -60,7 +60,7 @@
       <!-- Farmer Sign-Up Form -->
       <div id="farmerForm" class="form-container">
         <h2>Farmer Sign-Up</h2>
-        <form method="POST" action="save_sign_up.php" class="border p-3 rounded">
+        <form method="POST" action="./config-php-files/save_sign_up.php" class="border p-3 rounded">
           <input type="hidden" name="userType" value="farmer" />
           <div class="mb-3">
             <label for="firstName" class="form-label">First Name:</label>

@@ -77,7 +77,7 @@
                                  <a class="nav-link" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
                               </li> -->
                               <li class=" d_none get_btn">
-                                 <a  href="#">Sign In</a>
+                                 <a  href="signIn.php">Sign In</a>
                               </li>
                               <li class=" d_none get_btn">
                                  <a  href="signUp.php">New Here?<br>Sign Up</a>
