@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirect based on user type
             switch ($userType) {
                 case 'farmer':
-                    header("Location: ../index.php");
+                    header("Location: ../user-dashboard/farmer_dashboard.php");
                     break;
                 case 'qcOfficer':
                     header("Location: ../index.php");
