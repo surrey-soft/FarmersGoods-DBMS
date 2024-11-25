@@ -83,27 +83,28 @@
 <body>
   <div class="wrapper">
     <h2>Sign In</h2>
-    <form action="#">
+    <form action="config-php-files/verification-signIn.php" method="POST">
       <div class="input-box">
-        <select required>
+        <select name="userType" required>
           <option value="" disabled selected>Select User Type</option>
-          <option value="admin">Farmers</option>
-          <option value="editor">QC Officer</option>
-          <option value="viewer">Customer</option>
-          <option value="contributor">Packeging Staff</option>
-          <option value="guest">Driver</option>
+          <option value="farmer">Farmers</option>
+          <option value="qcOfficer">QC Officer</option>
+          <option value="customer">Customer</option>
+          <option value="packagingStaff">Packaging Staff</option>
+          <option value="driver">Driver</option>
         </select>
       </div>
       <div class="input-box">
-        <input type="text" placeholder="ID" required>
+        <input type="text" name="id" placeholder="ID" required>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password" required>
       </div>
       <div class="input-box button">
         <input type="submit" value="Sign In">
       </div>
     </form>
+
   </div>
 </body>
 </html>
