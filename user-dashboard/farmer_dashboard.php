@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// If Show Products button is clicked, fetch products for the current farmer
+// Fetch products for the current farmer
 $products = [];
 if (isset($_GET['show_products'])) {
     // Fetch products from session if available
@@ -189,17 +189,17 @@ if (isset($_GET['show_products'])) {
             <th>Product Name</th>
             <th>Product Type</th>
             <th>Product Date</th>
-            <th>Batch ID (to be added by QC)</th>
+            <th>Batch ID</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="productTableBody">
           <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
               <tr>
-                <td><?php echo $product['Product_Name']; ?></td>
-                <td><?php echo $product['Product_Type']; ?></td>
-                <td><?php echo $product['Product_Date']; ?></td>
-                <td><?php echo $product['Batch_ID'] ? $product['Batch_ID'] : 'Pending'; ?></td>
+                <td><?php echo htmlspecialchars($product['Product_Name']); ?></td>
+                <td><?php echo htmlspecialchars($product['Product_Type']); ?></td>
+                <td><?php echo htmlspecialchars($product['Date']); ?></td>
+                <td><?php echo !empty($product['Batch_ID']) ? htmlspecialchars($product['Batch_ID']) : 'Pending'; ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
@@ -210,6 +210,7 @@ if (isset($_GET['show_products'])) {
         </tbody>
       </table>
     </div>
+
   </div>
 
   <script>
