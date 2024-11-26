@@ -191,6 +191,7 @@ if (isset($_SESSION['user_id'])) {
         <label for="product_date">Product Date</label>
         <input type="date" name="product_date" id="product_date" required />
         <input type="submit" value="Add Product" />
+        <button type="button" onclick="cancelAddProduct()">Cancel</button> <!-- Cancel Button -->
       </form>
     </div>
 
@@ -233,6 +234,12 @@ if (isset($_SESSION['user_id'])) {
     function showAddProductForm() {
       document.getElementById("addProductForm").style.display = "block";  // Show Add Product form
       document.getElementById("productList").style.display = "none";  // Hide Product List
+    }
+
+    // Function to cancel adding a product and hide the form
+    function cancelAddProduct() {
+      document.getElementById("addProductForm").style.display = "none";  // Hide Add Product form
+      document.getElementById("productList").style.display = "block";  // Show Product List
     }
 
     function signOut() {
