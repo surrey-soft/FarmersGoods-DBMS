@@ -17,6 +17,7 @@ CREATE TABLE Product (
     Product_Name VARCHAR(100),
     Product_Type VARCHAR(50),
     Date DATE
+    Farmer_ID INT,
 );
 
 -- QC OFFICER TABLE

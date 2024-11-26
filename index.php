@@ -171,8 +171,8 @@
                            <div class="choose_box">
                               <i><img src="images/icon1.png" alt="#"/></i>
                               <div class="choose_text">
-                                 <h3>Excellent Service</h3>
-                                 <p>It is a long established fact that a reader will be distracted by the readable content of a</p>
+                                 <h3>Affordable Pricing:</h3>
+                                 <p>By eliminating middlemen, we offer high-quality, organic produce at lower prices, making fresh vegetables accessible to more people.</p>
                               </div>
                            </div>
                         </div>
@@ -180,8 +180,8 @@
                            <div class="choose_box">
                               <i><img src="images/icon2.png" alt="#"/></i>
                               <div class="choose_text">
-                                 <h3>Clean Working</h3>
-                                 <p>It is a long established fact that a reader will be distracted by the readable content of a</p>
+                                 <h3>Support Local Farmers:</h3>
+                                 <p>Every purchase helps local farmers, promoting sustainable agriculture and ensuring they receive fair compensation for their hard work.</p>
                               </div>
                            </div>
                         </div>
@@ -189,8 +189,8 @@
                            <div class="choose_box">
                               <i><img src="images/icon3.png" alt="#"/></i>
                               <div class="choose_text">
-                                 <h3>Quality And Reliability</h3>
-                                 <p>It is a long established fact that a reader will be distracted by the readable content of a</p>
+                                 <h3>Eco-Friendly Packaging:</h3>
+                                 <p>We use recyclable packaging to minimize waste and reduce our carbon footprint, making every delivery a little greener.</p>
                               </div>
                            </div>
                         </div>
@@ -198,8 +198,8 @@
                            <div class="choose_box">
                               <i><img src="images/icon4.png" alt="#"/></i>
                               <div class="choose_text">
-                                 <h3>Expert Farmer</h3>
-                                 <p>It is a long established fact that a reader will be distracted by the readable content of a</p>
+                                 <h3>Fresh and High-Quality:</h3>
+                                 <p>Our vegetables are harvested at peak freshness and delivered to your door within hours, ensuring maximum nutrition and flavor.</p>
                               </div>
                            </div>
                         </div>
@@ -296,8 +296,8 @@
                                     <div class="col-md-12">
                                        <div class="test_box">
                                           <i><img src="images/tes1.png" alt="#"/></i>
-                                          <h4>jhone Du</h4>
-                                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+                                          <h4>Abdur Rahman</h4>
+                                          <p>Pretty good in service</p>
                                        </div>
                                     </div>
                                  </div>
@@ -311,8 +311,8 @@
                                     <div class="col-md-12">
                                        <div class="test_box">
                                           <i><img src="images/tes1.png" alt="#"/></i>
-                                          <h4>jhone Du</h4>
-                                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+                                          <h4>Maleka Begum</h4>
+                                          <p>Low Price, High Quality</p>
                                        </div>
                                     </div>
                                  </div>
@@ -326,8 +326,8 @@
                                     <div class="col-md-12">
                                        <div class="test_box">
                                           <i><img src="images/tes1.png" alt="#"/></i>
-                                          <h4>jhone Du</h4>
-                                          <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
+                                          <h4>Jibon Mia</h4>
+                                          <p>Good service</p>
                                        </div>
                                     </div>
                                  </div>
