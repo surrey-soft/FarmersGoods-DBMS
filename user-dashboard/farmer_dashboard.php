@@ -1,18 +1,30 @@
 <?php
 session_start();
 
-// Check if the user is logged in
+// Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../index.php');
     exit();
 }
 
-// Fetch products for the current farmer
+// Include database connection
+include("../config-php-files/db_connection.php");
+
+// Fetch products for the logged-in farmer
 $products = [];
-if (isset($_GET['show_products'])) {
-    // Fetch products from session if available
-    if (isset($_SESSION['products'])) {
-        $products = $_SESSION['products'];
+if (isset($_SESSION['user_id'])) {
+    $farmerId = $_SESSION['user_id']; // Get logged-in farmer's ID
+
+    // Fetch products from the database
+    $sql = "SELECT * FROM product WHERE Farmer_ID = $farmerId";
+    $result = mysqli_query($con, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        // Store the products in the session for later use
+        $products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $_SESSION['products'] = $products;  // Store in session to use in frontend
+    } else {
+        $_SESSION['products'] = [];  // No products found
     }
 }
 ?>
@@ -24,8 +36,6 @@ if (isset($_GET['show_products'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Farmer Dashboard</title>
   <style>
-    /* Styling for the page */
-    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
     body {
       font-family: 'Poppins', sans-serif;
       background: #f1f1f1;
@@ -69,9 +79,14 @@ if (isset($_GET['show_products'])) {
       color: #333;
     }
 
-    .form-container,
-    .product-list {
+    .form-container {
       margin-top: 20px;
+      display: none;
+    }
+
+    .form-container form {
+      display: flex;
+      flex-direction: column;
     }
 
     label {
@@ -88,6 +103,7 @@ if (isset($_GET['show_products'])) {
       border-radius: 6px;
       transition: all 0.3s ease;
       width: 100%;
+      margin-bottom: 10px;
     }
 
     input[type="text"]:focus,
@@ -110,18 +126,24 @@ if (isset($_GET['show_products'])) {
       background-color: #0e4bf1;
     }
 
-    .product-list table {
+    table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    .product-list table, .product-list th, .product-list td {
+    table, th, td {
       border: 1px solid #ddd;
     }
 
-    .product-list th, .product-list td {
+    th, td {
       padding: 12px;
       text-align: left;
+    }
+
+    .no-products {
+      text-align: center;
+      color: #555;
     }
 
     .back-btn {
@@ -135,18 +157,17 @@ if (isset($_GET['show_products'])) {
       font-size: 16px;
     }
 
-    /* Initially hide both Add Product Form and Product List */
-    #addProductForm,
-    #productList {
-      display: none; /* Hide both initially */
+    /* Initially hide Add Product Form */
+    #addProductForm {
+      display: none;
     }
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <div class="navbar">
     <a href="javascript:void(0);" onclick="showAddProductForm()">Add Product</a>
-    <a href="javascript:void(0);" onclick="showProducts()">Show Products</a>
     <a href="javascript:void(0);" onclick="signOut()">Sign Out</a>
   </div>
 
@@ -154,16 +175,9 @@ if (isset($_GET['show_products'])) {
   <div class="container">
     <h2>Welcome to Your Dashboard, Farmer!</h2>
 
-    <!-- Error Messages -->
-    <?php if (isset($_SESSION['error'])): ?>
-      <div style="color: red; text-align: center;">
-        <?php echo $_SESSION['error']; ?>
-      </div>
-      <?php unset($_SESSION['error']); // Clear the error message after displaying ?>
-    <?php endif; ?>
-
     <!-- Add Product Form -->
     <div class="form-container" id="addProductForm">
+      <h3>Add New Product</h3>
       <form method="POST" action="../config-php-files/farmer-add-fetch-products.php">
         <label for="product_name">Product Name</label>
         <input type="text" name="product_name" id="product_name" placeholder="Enter product name" required />
@@ -180,35 +194,36 @@ if (isset($_GET['show_products'])) {
       </form>
     </div>
 
-    <!-- Show Products -->
-    <div class="product-list" id="productList">
-      <h3>Your Products</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Product Type</th>
-            <th>Product Date</th>
-            <th>Batch ID</th>
-          </tr>
-        </thead>
-        <tbody id="productTableBody">
-          <?php if (!empty($products)): ?>
+    <!-- Display Products -->
+    <div id="productList">
+      <?php if (empty($products)): ?>
+        <div class="no-products">
+          <p>No products available. Please add a product.</p>
+        </div>
+      <?php else: ?>
+        <table>
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Product Type</th>
+              <th>Product Date</th>
+              <th>Batch ID</th>
+            </tr>
+          </thead>
+          <tbody>
             <?php foreach ($products as $product): ?>
               <tr>
+                <td><?php echo htmlspecialchars($product['Product_ID']); ?></td>
                 <td><?php echo htmlspecialchars($product['Product_Name']); ?></td>
                 <td><?php echo htmlspecialchars($product['Product_Type']); ?></td>
                 <td><?php echo htmlspecialchars($product['Date']); ?></td>
                 <td><?php echo !empty($product['Batch_ID']) ? htmlspecialchars($product['Batch_ID']) : 'Pending'; ?></td>
               </tr>
             <?php endforeach; ?>
-          <?php else: ?>
-            <tr>
-              <td colspan="4">No products available.</td>
-            </tr>
-          <?php endif; ?>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      <?php endif; ?>
     </div>
 
   </div>
@@ -220,14 +235,10 @@ if (isset($_GET['show_products'])) {
       document.getElementById("productList").style.display = "none";  // Hide Product List
     }
 
-    function showProducts() {
-      document.getElementById("productList").style.display = "block";  // Show Products table
-      document.getElementById("addProductForm").style.display = "none";  // Hide Add Product form
-    }
-
     function signOut() {
       window.location.href = "../index.php"; // Redirect to login page
     }
   </script>
+
 </body>
 </html>

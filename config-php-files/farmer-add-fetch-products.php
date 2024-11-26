@@ -10,31 +10,26 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Fetch all products for the logged-in farmer when Show Products is clicked
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['show_products'])) {
-    $farmerId = $_SESSION['user_id']; // Get the logged-in farmer's ID
+// Function to add the product to the database
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'], $_POST['product_type'], $_POST['product_date'])) {
+    // Sanitize input
+    $productName = mysqli_real_escape_string($con, $_POST['product_name']);
+    $productType = mysqli_real_escape_string($con, $_POST['product_type']);
+    $productDate = mysqli_real_escape_string($con, $_POST['product_date']);
+    $farmerId = $_SESSION['user_id']; // Get logged-in farmer's ID
 
-    // Fetch the products from the database (Farmer_ID as an integer)
-    $sql = "SELECT * FROM product WHERE Farmer_ID = $farmerId";
-    $result = mysqli_query($con, $sql);
-
-    if ($result) {
-        if (mysqli_num_rows($result) > 0) {
-            $_SESSION['products'] = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            file_put_contents('php://stdout', "Fetched Products: " . print_r($_SESSION['products'], true) . "\n");
-            
-        } else {
-            $_SESSION['products'] = [];
-            $_SESSION['error'] = 'No products found for this farmer.';
-            file_put_contents('php://stdout', "No products found for Farmer ID: $farmerId\n");
-        }
+    // Insert into product table
+    $sql = "INSERT INTO product (Product_Name, Product_Type, Date, Farmer_ID) 
+            VALUES ('$productName', '$productType', '$productDate', '$farmerId')";
+    
+    if (mysqli_query($con, $sql)) {
+        $_SESSION['success'] = 'Product added successfully!';
     } else {
-        $_SESSION['error'] = 'Error fetching products from the database.';
-        file_put_contents('php://stderr', "SQL Error: " . mysqli_error($con) . "\n");
+        $_SESSION['error'] = 'Error adding product.';
     }
 
     // Redirect back to the dashboard
-    header('Location: ../user-dashboard/farmer_dashboard.php?show_products=true');
+    header('Location:../user-dashboard/farmer_dashboard.php');
     exit();
 }
 ?>
