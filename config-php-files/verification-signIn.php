@@ -56,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     header("Location: ../user-dashboard/qcofficer_dashboard.php");
                     break;
                 case 'customer':
-                    header("Location: ../index.php");
+                    header("Location: ../user-dashboard/customer_dashboard.php");
                     break;
                 case 'packagingStaff':
-                    header("Location: ../index.php");
+                    header("Location: ../user-dashboard/packagingstaff_dashboard.php");
                     break;
                 case 'driver':
-                    header("Location: ../index.php");
+                    header("Location: ../user-dashboard/driver_dashboard.php");
                     break;
                 default:
                     echo "Invalid user type.";
