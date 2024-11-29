@@ -14,7 +14,3 @@
     }
     
 ?>
-
-
-<!-- Shakil-setup -->
-<!-- $con = mysqli_connect($hostName,$userName,$password,$dbName,3306); -->
