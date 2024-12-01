@@ -29,7 +29,21 @@ $con->close(); // Close DB connection
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
+   <!-- bootstrap css -->
+   <link rel="stylesheet" href="../css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" href="../css/style.css">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="../css/responsive.css">
+      <!-- fevicon -->
+      <link rel="icon" href="../images/fevicon.png" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
   <link rel="stylesheet" href="../css/added-style.css">
+  <link rel="stylesheet" href="..css/style.css">
 </head>
 <body>
   <!-- Navbar -->
@@ -134,6 +148,7 @@ $con->close(); // Close DB connection
       </form>
     </div>
   </div>
+  <?php include '../footer.php' ?>
 
   <script>
     // Show Assign Warehouse Form

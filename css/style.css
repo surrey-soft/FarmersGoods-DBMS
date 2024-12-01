@@ -783,7 +783,7 @@ ul.btn li:last-child {
 /** footer **/
 
 .footer {
-  background: #212121;
+  /* background: #212121; */
   padding-top: 85px;
   text-align: center;
 }
@@ -984,7 +984,7 @@ ul.link li a::after {
 .copyright {
   margin-top: 70px;
   padding: 20px 0px;
-  background-color: #f4cb1e;
+  background-color: #989058;
 }
 
 .copyright p {
