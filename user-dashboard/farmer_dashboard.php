@@ -93,7 +93,7 @@ if (isset($_SESSION['user_id'])) {
                 <td><?php echo htmlspecialchars($product['Product_Name']); ?></td>
                 <td><?php echo htmlspecialchars($product['Product_Type']); ?></td>
                 <td><?php echo htmlspecialchars($product['Date']); ?></td>
-                <td><?php echo !empty($product['Batch_ID']) ? htmlspecialchars($product['Batch_ID']) : 'Pending'; ?></td>
+                <td><?php echo !empty($product['BatchID']) ? htmlspecialchars($product['BatchID']) : 'Pending'; ?></td>
               </tr>
             <?php endforeach; ?>
           </tbody>
