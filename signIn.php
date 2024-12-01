@@ -92,6 +92,7 @@
           <option value="customer">Customer</option>
           <option value="packagingStaff">Packaging Staff</option>
           <option value="driver">Driver</option>
+          <option value="admin">Admin</option>
         </select>
       </div>
       <div class="input-box">
@@ -104,7 +105,6 @@
         <input type="submit" value="Sign In">
       </div>
     </form>
-
   </div>
 </body>
 </html>

@@ -1,214 +1,91 @@
+<?php
+session_start();
+
+// Ensure Driver is logged in
+if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] !== 'driver') {
+    die("Unauthorized access! Please log in as Driver.");
+}
+
+$driver_id = $_SESSION['user_id']; // Logged-in Driver ID
+
+// Include DB connection
+include '../config-php-files/db_connection.php';
+
+// Fetch orders with 'Packaging Completed' status
+$sql = "SELECT o.Order_ID, o.Product_ID, o.Order_Destination, o.Order_Date, c.Customer_ID 
+        FROM ordertable o
+        JOIN customer c ON o.Customer_ID = c.Customer_ID
+        WHERE o.Order_Status = 'Packaging Completed'";
+
+$result = $con->query($sql);
+
+$orders = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+}
+
+$con->close(); // Close the DB connection
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oc Dashboard</title>
-  <style>
-    /* Styling for the page */
-    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f1f1f1;
-      margin: 0;
-      padding: 0;
-    }
-
-    .navbar {
-      background-color: #4070f4;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .navbar a {
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      margin: 0 15px;
-      cursor: pointer;
-    }
-
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      width: 80%;
-      margin: 20px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 24px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .form-container,
-    .product-list {
-      margin-top: 20px;
-    }
-
-    label {
-      font-size: 16px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    input,
-    select {
-      padding: 12px;
-      font-size: 14px;
-      border: 1.5px solid #c7bebe;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-
-    input[type="text"]:focus,
-    select:focus {
-      border-color: #4070f4;
-    }
-
-    input[type="submit"] {
-      background-color: #4070f4;
-      color: white;
-      cursor: pointer;
-      border: none;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #0e4bf1;
-    }
-
-    .product-list table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .product-list table, .product-list th, .product-list td {
-      border: 1px solid #ddd;
-    }
-
-    .product-list th, .product-list td {
-      padding: 12px;
-      text-align: left;
-    }
-
-    .back-btn {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .back-btn a {
-      text-decoration: none;
-      color: #4070f4;
-      font-size: 16px;
-    }
-
-    /* Initially hide both Add Product Form and Product List */
-    #addProductForm,
-    #productList {
-      display: none; /* Hide both initially */
-    }
-  </style>
+  <title>Driver Dashboard</title>
+  <link rel="stylesheet" href="../css/added-style.css">
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
-    <!-- <a href="javascript:void(0);" onclick="showAddProductForm()">Add Product</a> -->
-    <a href="javascript:void(0);" onclick="showPackegingProducts()">Show Transportation Details</a>
-    <a href="javascript:void(0);" onclick="signOut()">Sign Out</a>
+    <a href="driver_dashboard.php">View Orders</a>
+    <a href="../index.php">Sign Out</a>
   </div>
 
   <!-- Dashboard container -->
   <div class="container">
-    <h2>Transportation Driver Dashboard!</h2>
+    <h2>Welcome to Your Dashboard, Driver!</h2>
 
-    <!-- Error Messages -->
-    <?php if (isset($_SESSION['error'])): ?>
-      <div style="color: red; text-align: center;">
-        <?php echo $_SESSION['error']; ?>
-      </div>
-      <?php unset($_SESSION['error']); // Clear the error message after displaying ?>
-    <?php endif; ?>
-
-    <!-- Add Product Form -->
-    <!-- <div class="form-container" id="addProductForm">
-      <form method="POST" action="../config-php-files/farmer-add-fetch-products.php">
-        <label for="product_name">Product Name</label>
-        <input type="text" name="product_name" id="product_name" placeholder="Enter product name" required />
-        <label for="product_type">Product Type</label>
-        <select name="product_type" id="product_type" required>
-          <option value="Fruit">Fruit</option>
-          <option value="Vegetable">Vegetable</option>
-          <option value="Grain">Grain</option>
-          <option value="Dairy">Dairy</option>
-        </select>
-        <label for="product_date">Product Date</label>
-        <input type="date" name="product_date" id="product_date" required />
-        <input type="submit" value="Add Product" />
-      </form>
-    </div> -->
-
-    <!-- Show Products -->
-    <div class="product-list" id="productList">
-      <h3>Transportstion Details</h3>
+    <!-- Orders Ready for Transport -->
+    <div class="product-list">
+      <h3>Orders Ready for Transport</h3>
       <table>
         <thead>
           <tr>
-          <th>Driver ID</th>
-            <th>Transport ID</th>
-            <th>Shipment Destionation</th>
-            <th>Shipment Dimension</th>
-            <th>Shipment Status</th>
+            <th>Order ID</th>
+            <th>Product ID</th>
+            <th>Order Destination</th>
+            <th>Order Date</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <?php if (!empty($products)): ?>
-            <?php foreach ($products as $product): ?>
+          <?php if (!empty($orders)): ?>
+            <?php foreach ($orders as $order): ?>
               <tr>
-                <td><?php echo $product['Product_Name']; ?></td>
-                <td><?php echo $product['Product_Type']; ?></td>
-                <td><?php echo $product['Product_Date']; ?></td>
-                <td><?php echo $product['Batch_ID'] ? $product['Batch_ID'] : 'Pending'; ?></td>
+                <td><?php echo $order['Order_ID']; ?></td>
+                <td><?php echo $order['Product_ID']; ?></td>
+                <td><?php echo $order['Order_Destination']; ?></td>
+                <td><?php echo $order['Order_Date']; ?></td>
+                <td>
+                  <!-- Form to accept order -->
+                  <form action="../config-php-files/driver_accept_order.php" method="POST">
+                    <input type="hidden" name="order_id" value="<?php echo $order['Order_ID']; ?>" />
+                    <input type="submit" value="Accept Order" />
+                  </form>
+                </td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="4">No products available.</td>
+              <td colspan="5">No orders available for transport.</td>
             </tr>
           <?php endif; ?>
         </tbody>
       </table>
     </div>
   </div>
-
-  <script>
-    // Show and hide form sections
-    function showAddProductForm() {
-      document.getElementById("addProductForm").style.display = "block";  // Show Add Product form
-      document.getElementById("productList").style.display = "none";  // Hide Product List
-    }
-
-    function showProducts() {
-      document.getElementById("productList").style.display = "block";  // Show Products table
-      document.getElementById("addProductForm").style.display = "none";  // Hide Add Product form
-    }
-
-    function signOut() {
-      window.location.href = "../index.php"; // Redirect to login page
-    }
-  </script>
 </body>
 </html>

@@ -1,16 +1,29 @@
 <?php
-// Include database connection
-include("db_connection.php");
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Collect and sanitize inputs
-    $userType = isset($_POST['userType']) ? mysqli_real_escape_string($con, $_POST['userType']) : null;
-    $id = isset($_POST['id']) ? mysqli_real_escape_string($con, $_POST['id']) : null;
-    $password = isset($_POST['password']) ? $_POST['password'] : null;
+// Include DB connection
+include '../config-php-files/db_connection.php'; // Adjust the path to your connection script
+
+// Check if form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userType = $_POST['userType'] ?? null;
+    $id = $_POST['id'] ?? null;
+    $password = $_POST['password'] ?? null;
 
     if (!$userType || !$id || !$password) {
-        echo "All fields are required.";
-        exit();
+        die("All fields are required.");
+    }
+
+    // Handle Admin user
+    if ($userType === 'admin') {
+        if ($id === 'Admin' && $password === 'Admin123') {
+            $_SESSION['user_id'] = 'Admin';
+            $_SESSION['user_type'] = 'admin';
+            header("Location: ../user-dashboard/admin_dashboard.php");
+            exit();
+        } else {
+            die("Invalid Admin credentials.");
+        }
     }
 
     // Define table mappings
@@ -21,30 +34,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'packagingStaff' => ['table' => 'packagingstaff', 'idColumn' => 'Staff_ID', 'passwordColumn' => 'Password'],
         'driver' => ['table' => 'driver', 'idColumn' => 'Driver_ID', 'passwordColumn' => 'Password']
     ];
-    
 
     if (!array_key_exists($userType, $tableMap)) {
-        echo "Invalid user type.";
-        exit();
+        die("Invalid user type.");
     }
 
-    // Fetch user credentials from the corresponding table
-    $tableName = $tableMap[$userType]['table'];
+    // Fetch user credentials
+    $table = $tableMap[$userType]['table'];
     $idColumn = $tableMap[$userType]['idColumn'];
     $passwordColumn = $tableMap[$userType]['passwordColumn'];
 
-    $sql = "SELECT * FROM $tableName WHERE $idColumn = ?";
+    $sql = "SELECT * FROM $table WHERE $idColumn = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $stmt = mysqli_prepare($con, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    if ($row = mysqli_fetch_assoc($result)) {
-        // Verify password
+    if ($row = $result->fetch_assoc()) {
         if (password_verify($password, $row[$passwordColumn])) {
-            session_start();
-            $_SESSION['user_id'] = $row[$idColumn]; // Store session info
+            $_SESSION['user_id'] = $row[$idColumn];
             $_SESSION['user_type'] = $userType;
 
             // Redirect based on user type
@@ -69,10 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             exit();
         } else {
-            echo "Incorrect password.";
+            die("Incorrect password.");
         }
     } else {
-        echo "No account found for the provided ID.";
+        die("No account found for the provided ID.");
     }
 }
+
+$con->close();
 ?>

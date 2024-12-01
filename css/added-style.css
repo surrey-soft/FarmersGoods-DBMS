@@ -1,0 +1,128 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #4070f4;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  width: 80%;
+  margin: 20px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-container {
+  margin-top: 20px;
+  display: none;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+input,
+select {
+  padding: 12px;
+  font-size: 14px;
+  border: 1.5px solid #c7bebe;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #4070f4;
+}
+
+input[type="submit"] {
+  background-color: #4070f4;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #0e4bf1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+.no-products {
+  text-align: center;
+  color: #555;
+}
+
+.back-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-btn a {
+  text-decoration: none;
+  color: #4070f4;
+  font-size: 16px;
+}
+
+/* Initially hide Add Product Form */
+#addProductForm {
+  display: none;
+}

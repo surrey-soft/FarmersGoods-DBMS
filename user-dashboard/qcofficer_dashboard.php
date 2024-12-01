@@ -1,133 +1,35 @@
+<?php
+// Include DB connection
+include '../config-php-files/db_connection.php'; // Adjust the path to your connection script
+
+// Fetch products without Batch ID
+$sql = "SELECT Product_ID, Product_Name, Product_Type, Date FROM PRODUCT WHERE BatchID IS NULL";
+$result = $con->query($sql);
+
+$products = [];
+if ($result && $result->num_rows > 0) {
+  while ($row = $result->fetch_assoc()) {
+    $products[] = $row; // Add rows to the products array
+  }
+} elseif (!$result) {
+  die("Query failed: " . $con->error); // Debug query failure
+}
+
+$con->close(); // Close the database connection
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oc Dashboard</title>
-  <style>
-    /* Styling for the page */
-    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f1f1f1;
-      margin: 0;
-      padding: 0;
-    }
-
-    .navbar {
-      background-color: #4070f4;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .navbar a {
-      color: white;
-      font-size: 18px;
-      text-decoration: none;
-      margin: 0 15px;
-      cursor: pointer;
-    }
-
-    .navbar a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      width: 80%;
-      margin: 20px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 24px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .form-container,
-    .product-list {
-      margin-top: 20px;
-    }
-
-    label {
-      font-size: 16px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    input,
-    select {
-      padding: 12px;
-      font-size: 14px;
-      border: 1.5px solid #c7bebe;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-
-    input[type="text"]:focus,
-    select:focus {
-      border-color: #4070f4;
-    }
-
-    input[type="submit"] {
-      background-color: #4070f4;
-      color: white;
-      cursor: pointer;
-      border: none;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-      background-color: #0e4bf1;
-    }
-
-    .product-list table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .product-list table, .product-list th, .product-list td {
-      border: 1px solid #ddd;
-    }
-
-    .product-list th, .product-list td {
-      padding: 12px;
-      text-align: left;
-    }
-
-    .back-btn {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .back-btn a {
-      text-decoration: none;
-      color: #4070f4;
-      font-size: 16px;
-    }
-
-    /* Initially hide both Add Product Form and Product List */
-    #addProductForm,
-    #productList {
-      display: none; /* Hide both initially */
-    }
-  </style>
+  <link rel="stylesheet" href="../css/added-style.css">
+  <title>QC Dashboard</title>
 </head>
 <body>
   <!-- Navbar -->
   <div class="navbar">
-    <!-- <a href="javascript:void(0);" onclick="showAddProductForm()">Add Product</a> -->
-    <a href="javascript:void(0);" onclick="showProducts()">Show Products</a>
+    <a href="javascript:void(0);" onclick="showAssignBatchForm()">Assign Batch</a>
     <a href="javascript:void(0);" onclick="signOut()">Sign Out</a>
   </div>
 
@@ -135,74 +37,85 @@
   <div class="container">
     <h2>Welcome to Your Dashboard, QC Officer!</h2>
 
-    <!-- Error Messages -->
-    <?php if (isset($_SESSION['error'])): ?>
-      <div style="color: red; text-align: center;">
-        <?php echo $_SESSION['error']; ?>
-      </div>
-      <?php unset($_SESSION['error']); // Clear the error message after displaying ?>
-    <?php endif; ?>
-
-    <!-- Add Product Form -->
-    <!-- <div class="form-container" id="addProductForm">
-      <form method="POST" action="../config-php-files/farmer-add-fetch-products.php">
-        <label for="product_name">Product Name</label>
-        <input type="text" name="product_name" id="product_name" placeholder="Enter product name" required />
-        <label for="product_type">Product Type</label>
-        <select name="product_type" id="product_type" required>
-          <option value="Fruit">Fruit</option>
-          <option value="Vegetable">Vegetable</option>
-          <option value="Grain">Grain</option>
-          <option value="Dairy">Dairy</option>
-        </select>
-        <label for="product_date">Product Date</label>
-        <input type="date" name="product_date" id="product_date" required />
-        <input type="submit" value="Add Product" />
-      </form>
-    </div> -->
-
     <!-- Show Products -->
     <div class="product-list" id="productList">
-      <h3>Product need to be add Batch ID</h3>
+      <h3>Products Needing Batch ID Assignment</h3>
       <table>
         <thead>
           <tr>
+            <th>Product ID</th>
             <th>Product Name</th>
             <th>Product Type</th>
             <th>Product Date</th>
-            <th>Batch ID (to be added by QC)</th>
+            <th>Batch ID (Status)</th>
           </tr>
         </thead>
         <tbody>
           <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
               <tr>
+                <td><?php echo $product['Product_ID']; ?></td>
                 <td><?php echo $product['Product_Name']; ?></td>
                 <td><?php echo $product['Product_Type']; ?></td>
-                <td><?php echo $product['Product_Date']; ?></td>
-                <td><?php echo $product['Batch_ID'] ? $product['Batch_ID'] : 'Pending'; ?></td>
+                <td><?php echo $product['Date']; ?></td>
+                <td>Pending</td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="4">No products available.</td>
+              <td colspan="5">No products available without a Batch ID.</td>
             </tr>
           <?php endif; ?>
         </tbody>
       </table>
     </div>
+
+    <!-- Assign Batch ID Form -->
+    <div class="form-container" id="assignBatchForm" style="display: none;">
+      <h3>Assign Batch ID</h3>
+      <form method="POST" action="../config-php-files/qc_assign_batch_id.php">
+      <label for="batch_id">Batch ID</label>
+        <input 
+          type="text" 
+          name="batch_id" 
+          id="batch_id" 
+          placeholder="Enter Batch ID in format(lowercase): productName-date-month-year" 
+          required 
+        />
+
+        <label for="product_id">Product ID</label>
+        <input type="text" name="product_id" id="product_id" placeholder="Enter Product ID" required />
+
+        <label for="batch_name">Batch Name</label>
+        <input type="text" name="batch_name" id="batch_name" placeholder="Enter Batch Name" required />
+
+        <label for="batch_type">Batch Type</label>
+        <select name="batch_type" id="batch_type" required>
+          <option value="Fruit">Fruit</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Grain">Grain</option>
+          <option value="Dairy">Dairy</option>
+        </select>
+
+        <label for="batch_date">Batch Date</label>
+        <input type="date" name="batch_date" id="batch_date" required />
+
+        
+        <input type="submit" value="Assign Batch" />
+        <button type="button" onclick="cancelAssignBatch()">Cancel</button> <!-- Cancel button -->
+      </form>
+    </div>
   </div>
 
   <script>
-    // Show and hide form sections
-    function showAddProductForm() {
-      document.getElementById("addProductForm").style.display = "block";  // Show Add Product form
-      document.getElementById("productList").style.display = "none";  // Hide Product List
+    function showAssignBatchForm() {
+      document.getElementById("assignBatchForm").style.display = "block";
+      document.getElementById("productList").style.display = "none";
     }
 
-    function showProducts() {
-      document.getElementById("productList").style.display = "block";  // Show Products table
-      document.getElementById("addProductForm").style.display = "none";  // Hide Add Product form
+    function cancelAssignBatch() {
+      document.getElementById("assignBatchForm").style.display = "none";
+      document.getElementById("productList").style.display = "block"; // Show the product list
     }
 
     function signOut() {

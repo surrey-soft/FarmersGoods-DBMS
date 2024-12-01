@@ -18,6 +18,7 @@ CREATE TABLE Product (
     Product_Type VARCHAR(50),
     Date DATE
     Farmer_ID INT,
+    BatchID INT DEFAULT NULL;
 );
 
 -- QC OFFICER TABLE

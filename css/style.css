@@ -353,8 +353,8 @@ ul.btn li:last-child {
 }
 
 .get_btn a:hover {
-  color: #fff;
-  background-color: #d2d1d6;
+  color: #f4cb1e;
+  /* background-color: #d2d1d6; */
 }
 
 .header {
