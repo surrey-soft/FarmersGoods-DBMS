@@ -125,14 +125,14 @@
             <div class="row d_flex">
                <div class="col-md-5">
                   <div class="titlepage">
-                     <h2>World’s Hottest Destinations <br>for Vegans</h2>
+                     <!-- <h2>World’s Hottest Destinations <br>for Vegans</h2> -->
                   </div>
                </div>
-               <div class="col-md-7">
+               <!-- <div class="col-md-7">
                   <div class="hottest_box">
                      <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined </p>
                   </div>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <!-- end hottest -->
       <!-- choose  section -->
-      <div class="choose ">
+      <!-- <div class="choose ">
          <div class="container">
             <div class="row">
                <div class="col-md-8">
@@ -210,7 +210,7 @@
             </div>
          </div>
       </div>
-      </div>
+      </div> -->
       <!-- end choose  section -->
       <!-- product  section -->
       <div class="product">
@@ -260,7 +260,7 @@
       </div>
       <!-- end product  section -->
       <!-- about -->
-      <div class="about">
+      <!-- <div class="about">
          <div class="container">
             <div class="row">
                <div class="col-md-12">
@@ -336,13 +336,13 @@
                </div>
             </div>
          </div>
-      </div>
+      </div> -->
       <!-- end about -->
       </div>
       <!--  footer -->
       <footer id="contact">
          <div class="footer">
-            <div class="container">
+            <!-- <div class="container">
                <div class="row">
                   <div class="col-md-4">
                      <div class="titlepage">
@@ -413,7 +413,7 @@
                      </form>
                   </div>
                </div>
-            </div>
+            </div> -->
             <div class="copyright">
                <div class="container">
                   <div class="row">
