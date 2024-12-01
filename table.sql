@@ -1,192 +1,203 @@
-CREATE DATABASE dbms-farmers-goods;
--- FARMER TABLE
-CREATE TABLE Farmer (
-    Farmer_ID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Password VARCHAR(255) NOT NULL, -- Password field added
-    DOB DATE,
-    City VARCHAR(50),
-    RoadNo VARCHAR(50),
-    HouseNo VARCHAR(50)
-);
+-- Start transaction to ensure changes are grouped
+START TRANSACTION;
 
--- PRODUCT TABLE
-CREATE TABLE Product (
-    Product_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Product_Name VARCHAR(100),
-    Product_Type VARCHAR(50),
-    Date DATE
-    Farmer_ID INT,
-    BatchID INT DEFAULT NULL;
-);
+-- Create `batchcertification` table
+CREATE TABLE `batchcertification` (
+  `Certification_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Batch_ID` varchar(40) DEFAULT NULL,
+  `Warehouse_ID` int(11) DEFAULT NULL,
+  `StoredDate` date DEFAULT NULL,
+  PRIMARY KEY (`Certification_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- QC OFFICER TABLE
-CREATE TABLE QCOfficer (
-    QCO_ID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Password VARCHAR(255) NOT NULL, -- Password field added
-    SIM1 VARCHAR(15),
-    SIM2 VARCHAR(15)
-);
+-- Create `customer` table
+CREATE TABLE `customer` (
+  `Customer_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) DEFAULT NULL,
+  `LastName` varchar(50) DEFAULT NULL,
+  `C_Address` varchar(255) DEFAULT NULL,
+  `MobileNo` varchar(15) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`Customer_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- WAREHOUSE TABLE
-CREATE TABLE Warehouse (
-    Warehouse_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Location VARCHAR(255),
-    Storage_Capacity INT,
-    MFG DATE,
-    EXP DATE
-);
+-- Create `driver` table
+CREATE TABLE `driver` (
+  `Driver_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `D_FirstName` varchar(50) DEFAULT NULL,
+  `D_LastName` varchar(50) DEFAULT NULL,
+  `Contact_Info` varchar(100) DEFAULT NULL,
+  `D_Address` varchar(255) DEFAULT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`Driver_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- FARMER CONTACT TABLE
-CREATE TABLE FarmerContact (
-    Farmer_ID INT PRIMARY KEY,
-    ContactNo VARCHAR(15),
-    FOREIGN KEY (Farmer_ID) REFERENCES Farmer(Farmer_ID)
-);
+-- Create `farmer` table
+CREATE TABLE `farmer` (
+  `Farmer_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) DEFAULT NULL,
+  `LastName` varchar(50) DEFAULT NULL,
+  `Password` varchar(255) NOT NULL,
+  `DOB` date DEFAULT NULL,
+  `City` varchar(50) DEFAULT NULL,
+  `RoadNo` varchar(50) DEFAULT NULL,
+  `HouseNo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`Farmer_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- QC OFFICER CONTACT TABLE
-CREATE TABLE QCOfficerContact (
-    Contact_ID INT AUTO_INCREMENT PRIMARY KEY,
-    QCO_ID INT,
-    SIM VARCHAR(15),
-    FOREIGN KEY (QCO_ID) REFERENCES QCOfficer(QCO_ID)
-);
+-- Create `farmercontact` table
+CREATE TABLE `farmercontact` (
+  `Farmer_ID` int(11) NOT NULL,
+  `ContactNo` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`Farmer_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- HARVEST BATCH TABLE
-CREATE TABLE HarvestBatch (
-    Batch_ID INT AUTO_INCREMENT PRIMARY KEY,
-    BatchName VARCHAR(100),
-    BatchType VARCHAR(50),
-    Date DATE,
-    Farmer_ID INT,
-    Product_ID INT,
-    FOREIGN KEY (Farmer_ID) REFERENCES Farmer(Farmer_ID),
-    FOREIGN KEY (Product_ID) REFERENCES Product(Product_ID)
-);
+-- Create `grade` table
+CREATE TABLE `grade` (
+  `Grade_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Protein_Content` decimal(5,2) DEFAULT NULL,
+  `Nutrition_Level` decimal(5,2) DEFAULT NULL,
+  `QCO_ID` int(11) DEFAULT NULL,
+  `Size` varchar(50) DEFAULT NULL,
+  `Shape` varchar(50) DEFAULT NULL,
+  `Color` varchar(50) DEFAULT NULL,
+  `Moisture_Content` decimal(5,2) DEFAULT NULL,
+  `Ripeness_Level` decimal(5,2) DEFAULT NULL,
+  `Physical_Defects` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Grade_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- GRADE TABLE
-CREATE TABLE Grade (
-    Grade_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Protein_Content DECIMAL(5, 2),
-    Nutrition_Level DECIMAL(5, 2),
-    QCO_ID INT,
-    Size VARCHAR(50),
-    Shape VARCHAR(50),
-    Color VARCHAR(50),
-    Moisture_Content DECIMAL(5, 2),
-    Ripeness_Level DECIMAL(5, 2),
-    Physical_Defects VARCHAR(255),
-    FOREIGN KEY (QCO_ID) REFERENCES QCOfficer(QCO_ID)
-);
+-- Create `gradecertification` table
+CREATE TABLE `gradecertification` (
+  `Certification_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Protein_Content` decimal(5,2) DEFAULT NULL,
+  `Nutrition_Level` decimal(5,2) DEFAULT NULL,
+  `Warehouse_ID` int(11) DEFAULT NULL,
+  `GradedDateCompleted` date DEFAULT NULL,
+  PRIMARY KEY (`Certification_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- GRADE CERTIFICATION TABLE
-CREATE TABLE GradeCertification (
-    Certification_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Protein_Content DECIMAL(5, 2),
-    Nutrition_Level DECIMAL(5, 2),
-    Warehouse_ID INT,
-    GradedDateCompleted DATE,
-    FOREIGN KEY (Warehouse_ID) REFERENCES Warehouse(Warehouse_ID)
-);
+-- Create `harvestbatch` table
+CREATE TABLE `harvestbatch` (
+  `Batch_ID` varchar(40) NOT NULL,
+  `BatchName` varchar(100) DEFAULT NULL,
+  `BatchType` varchar(50) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  `Farmer_ID` int(11) DEFAULT NULL,
+  `Product_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Batch_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- BATCH CERTIFICATION TABLE
-CREATE TABLE BatchCertification (
-    Certification_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Batch_ID INT,
-    Warehouse_ID INT,
-    StoredDate DATE,
-    FOREIGN KEY (Batch_ID) REFERENCES HarvestBatch(Batch_ID),
-    FOREIGN KEY (Warehouse_ID) REFERENCES Warehouse(Warehouse_ID)
-);
+-- Create `ordertable` table
+CREATE TABLE `ordertable` (
+  `Order_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Order_Status` varchar(50) DEFAULT NULL,
+  `Order_Date` date DEFAULT NULL,
+  `Order_Pickup` varchar(255) DEFAULT NULL,
+  `Order_Destination` varchar(255) DEFAULT NULL,
+  `Warehouse_ID` int(11) DEFAULT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Customer_ID` int(11) NOT NULL,
+  `Driver_ID` int(11) NOT NULL,
+  PRIMARY KEY (`Order_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- CUSTOMER TABLE
-CREATE TABLE Customer (
-    Customer_ID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    C_Address VARCHAR(255),
-    MobileNo VARCHAR(15),
-    Email VARCHAR(100),
-    Password VARCHAR(255) NOT NULL, -- Password field added
-    Order_ID INT
-);
+-- Create `package` table
+CREATE TABLE `package` (
+  `Package_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `PackageType` varchar(50) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `Packaging_Date` date DEFAULT NULL,
+  `Order_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Package_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- ORDER TABLE
-CREATE TABLE OrderTable (
-    Order_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Order_Status VARCHAR(50),
-    Order_Date DATE,
-    Order_Pickup VARCHAR(255),
-    Order_Destination VARCHAR(255),
-    Warehouse_ID INT,
-    FOREIGN KEY (Warehouse_ID) REFERENCES Warehouse(Warehouse_ID)
-);
+-- Create `packagingstaff` table
+CREATE TABLE `packagingstaff` (
+  `Staff_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) DEFAULT NULL,
+  `LastName` varchar(50) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `DOB` date DEFAULT NULL,
+  `Contact_Info` varchar(100) DEFAULT NULL,
+  `Password` varchar(255) NOT NULL,
+  PRIMARY KEY (`Staff_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- PACKAGE TABLE
-CREATE TABLE Package (
-    Package_ID INT AUTO_INCREMENT PRIMARY KEY,
-    PackageType VARCHAR(50),
-    Description VARCHAR(255),
-    Packaging_Date DATE,
-    Order_ID INT,
-    FOREIGN KEY (Order_ID) REFERENCES OrderTable(Order_ID)
-);
+-- Create `product` table
+CREATE TABLE `product` (
+  `Product_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Product_Name` varchar(100) DEFAULT NULL,
+  `Product_Type` varchar(50) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  `Farmer_ID` int(11) NOT NULL,
+  `BatchID` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`Product_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- PACKAGING STAFF TABLE
-CREATE TABLE PackagingStaff (
-    Staff_ID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Address VARCHAR(255),
-    DOB DATE,
-    Contact_Info VARCHAR(100),
-    Password VARCHAR(255) NOT NULL -- Password field added
-);
+-- Create `qcofficer` table
+CREATE TABLE `qcofficer` (
+  `QCO_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) DEFAULT NULL,
+  `LastName` varchar(50) DEFAULT NULL,
+  `Password` varchar(255) NOT NULL,
+  `SIM1` varchar(15) DEFAULT NULL,
+  `SIM2` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`QCO_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- TRANSPORTATION TABLE
-CREATE TABLE Transportation (
-    Transport_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Shipment_Destination VARCHAR(255),
-    Shipment_Dimension VARCHAR(50),
-    Shipment_Status VARCHAR(50)
-);
+-- Create `qcofficercontact` table
+CREATE TABLE `qcofficercontact` (
+  `QCO_ID` int(11) NOT NULL,
+  `SIM` varchar(15) NOT NULL,
+  PRIMARY KEY (`QCO_ID`,`SIM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- TRANSPORTATION REPORT TABLE
-CREATE TABLE TransportationReport (
-    Report_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Package_ID INT,
-    Transport_ID INT,
-    Route_Path VARCHAR(255),
-    FOREIGN KEY (Package_ID) REFERENCES Package(Package_ID),
-    FOREIGN KEY (Transport_ID) REFERENCES Transportation(Transport_ID)
-);
+-- Create `transportation` table
+CREATE TABLE `transportation` (
+  `Transport_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Shipment_Destination` varchar(255) DEFAULT NULL,
+  `Shipment_Dimension` varchar(50) DEFAULT NULL,
+  `Shipment_Status` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`Transport_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- VEHICLE TABLE
-CREATE TABLE Vehicle (
-    Vehicle_RegNo VARCHAR(50) PRIMARY KEY,
-    V_Name VARCHAR(50),
-    V_Capacity INT,
-    Transport_ID INT,
-    FOREIGN KEY (Transport_ID) REFERENCES Transportation(Transport_ID)
-);
+-- Create `transportationreport` table
+CREATE TABLE `transportationreport` (
+  `Report_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Package_ID` int(11) DEFAULT NULL,
+  `Transport_ID` int(11) DEFAULT NULL,
+  `Route_Path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Report_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- VEHICLE TYPE TABLE
-CREATE TABLE VehicleType (
-    VehicleType_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Vehicle_RegNo VARCHAR(50),
-    Vehicle_Type VARCHAR(50), -- Example: Bike, Van, Truck
-    FOREIGN KEY (Vehicle_RegNo) REFERENCES Vehicle(Vehicle_RegNo)
-);
+-- Create `vehicle` table
+CREATE TABLE `vehicle` (
+  `Vehicle_RegNo` varchar(50) NOT NULL,
+  `V_Name` varchar(50) DEFAULT NULL,
+  `V_Capacity` int(11) DEFAULT NULL,
+  `Transport_ID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Vehicle_RegNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- DRIVER TABLE
-CREATE TABLE Driver (
-    Driver_ID INT AUTO_INCREMENT PRIMARY KEY,
-    D_FirstName VARCHAR(50),
-    D_LastName VARCHAR(50),
-    Contact_Info VARCHAR(100),
-    D_Address VARCHAR(255),
-    Password VARCHAR(255) NOT NULL -- Password field added
-);
+-- Create `vehicletype` table
+CREATE TABLE `vehicletype` (
+  `VehicleType_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Vehicle_RegNo` varchar(50) DEFAULT NULL,
+  `Vehicle_Type` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`VehicleType_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Create `warehouse` table
+CREATE TABLE `warehouse` (
+  `Warehouse_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Location` varchar(255) DEFAULT NULL,
+  `Storage_Capacity` int(11) DEFAULT NULL,
+  `MFG` date DEFAULT NULL,
+  `EXP` date DEFAULT NULL,
+  PRIMARY KEY (`Warehouse_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Commit changes to the database
+COMMIT;
