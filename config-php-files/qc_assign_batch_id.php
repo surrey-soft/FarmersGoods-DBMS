@@ -60,6 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$stmt->execute()) {
             die("Failed to insert into HARVEST_BATCH: " . $stmt->error);
         }
+        $insert_into_batch_certification = "INSERT INTO batchcertification (Batch_ID,StoredDate) VALUES(?,?)";
+        $stmt2=$con->prepare($insert_into_batch_certification);
+        $stmt2->bind_param("ss", $batch_id,$batch_date);
+        if (!$stmt2->execute()){
+          die("Failed to insert into batchcertification table: ".$stmt2->error);
+        }
     }
 
     // Update the batch ID in the product table
