@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 
 -- Table structure for table `batchcertification`
 CREATE TABLE `batchcertification` (
-  `Certification_ID` int(11) NOT NULL,
+  `Certification_ID` int(11) AUTO_INCREMENT NOT NULL ,
   `Batch_ID` varchar(40) DEFAULT NULL,
   `Warehouse_ID` int(11) DEFAULT NULL,
   `StoredDate` date DEFAULT NULL
@@ -28,7 +28,7 @@ CREATE TABLE `batchcertification` (
 
 -- Table structure for table `customer`
 CREATE TABLE `customer` (
-  `Customer_ID` int(11) NOT NULL,
+  `Customer_ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `C_Address` varchar(255) DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `customer` (
 
 -- Table structure for table `driver`
 CREATE TABLE `driver` (
-  `Driver_ID` int(11) NOT NULL,
+  `Driver_ID` int(11) NOT NULL AUTO_INCREMENT,
   `D_FirstName` varchar(50) DEFAULT NULL,
   `D_LastName` varchar(50) DEFAULT NULL,
   `Contact_Info` varchar(100) DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `driver` (
 
 -- Table structure for table `farmer`
 CREATE TABLE `farmer` (
-  `Farmer_ID` int(11) NOT NULL,
+  `Farmer_ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `Password` varchar(255) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE `grade` (
 
 -- Table structure for table `gradecertification`
 CREATE TABLE `gradecertification` (
-  `Certification_ID` int(11) NOT NULL,
+  `Certification_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Protein_Content` decimal(5,2) DEFAULT NULL,
   `Nutrition_Level` decimal(5,2) DEFAULT NULL,
   `Warehouse_ID` int(11) DEFAULT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE `harvestbatch` (
 
 -- Table structure for table `ordertable`
 CREATE TABLE `ordertable` (
-  `Order_ID` int(11) NOT NULL,
+  `Order_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Order_Status` varchar(50) DEFAULT NULL,
   `Order_Date` date DEFAULT NULL,
   `Order_Pickup` varchar(255) DEFAULT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE `ordertable` (
 
 -- Table structure for table `package`
 CREATE TABLE `package` (
-  `Package_ID` int(11) NOT NULL,
+  `Package_ID` int(11) NOT NULL AUTO_INCREMENT,
   `PackageType` varchar(50) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `Packaging_Date` date DEFAULT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE `package` (
 
 -- Table structure for table `packagingstaff`
 CREATE TABLE `packagingstaff` (
-  `Staff_ID` int(11) NOT NULL,
+  `Staff_ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `Address` varchar(255) DEFAULT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE `packagingstaff` (
 
 -- Table structure for table `product`
 CREATE TABLE `product` (
-  `Product_ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Product_Name` varchar(100) DEFAULT NULL,
   `Product_Type` varchar(50) DEFAULT NULL,
   `Date` date DEFAULT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE `product` (
 
 -- Table structure for table `qcofficer`
 CREATE TABLE `qcofficer` (
-  `QCO_ID` int(11) NOT NULL,
+  `QCO_ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(50) DEFAULT NULL,
   `LastName` varchar(50) DEFAULT NULL,
   `Password` varchar(255) NOT NULL,
@@ -185,7 +185,7 @@ CREATE TABLE `qcofficercontact` (
 
 -- Table structure for table `transportation`
 CREATE TABLE `transportation` (
-  `Transport_ID` int(11) NOT NULL,
+  `Transport_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Shipment_Destination` varchar(255) DEFAULT NULL,
   `Shipment_Dimension` varchar(50) DEFAULT NULL,
   `Shipment_Status` varchar(50) DEFAULT NULL
@@ -195,7 +195,7 @@ CREATE TABLE `transportation` (
 
 -- Table structure for table `transportationreport`
 CREATE TABLE `transportationreport` (
-  `Report_ID` int(11) NOT NULL,
+  `Report_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Package_ID` int(11) DEFAULT NULL,
   `Transport_ID` int(11) DEFAULT NULL,
   `Route_Path` varchar(255) DEFAULT NULL
@@ -225,7 +225,7 @@ CREATE TABLE `vehicletype` (
 
 -- Table structure for table `warehouse`
 CREATE TABLE `warehouse` (
-  `Warehouse_ID` int(11) NOT NULL,
+  `Warehouse_ID` int(11) NOT NULL AUTO_INCREMENT,
   `Location` varchar(255) DEFAULT NULL,
   `Storage_Capacity` int(11) DEFAULT NULL,
   `MFG` date DEFAULT NULL,
